@@ -1,4 +1,5 @@
 ﻿using Domain.Abstractions;
+using Infrastructure.Core;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Abstractions;

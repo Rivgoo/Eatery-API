@@ -6,6 +6,7 @@ using Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
+#region Api Versioning
 builder.Services.AddApiVersioning(opt =>
 {
 	opt.DefaultApiVersion = new ApiVersion(1, 0);
@@ -19,14 +20,16 @@ builder.Services.AddApiVersioning(opt =>
 	setup.GroupNameFormat = "'v'VVV";
 	setup.SubstituteApiVersionInUrl = true;
 });
+#endregion
 
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddInfrastructureServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 
+#region Api Versioning
 ApiVersionSet apiVersionSet = app.NewApiVersionSet()
 	.HasApiVersion(new ApiVersion(1))
 	.ReportApiVersions()
@@ -35,7 +38,7 @@ ApiVersionSet apiVersionSet = app.NewApiVersionSet()
 RouteGroupBuilder group = app
 	.MapGroup("api/v{version:apiVersion}")
 	.WithApiVersionSet(apiVersionSet);
-
+#endregion
 
 if (app.Environment.IsDevelopment())
 {
