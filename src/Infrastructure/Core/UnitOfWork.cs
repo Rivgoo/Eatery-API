@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.Abstractions;
 
 namespace Infrastructure.Core;
 
