@@ -1,5 +1,9 @@
 ﻿using Application.Abstractions;
+using Application.Eateries.Abstractions;
+using Application.MenuItems.Abstractions;
+using Application.Menus.Abstractions;
 using Infrastructure.Core;
+using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +17,12 @@ public static class Dependency
 		services.AddDatabasePovider(configuration);
 
 		services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+		#region Repositories
+		services.AddScoped<IEateryRepository, EateryRepository>();
+		services.AddScoped<IMenuRepository, MenuRepository>();
+		services.AddScoped<IMenuItemRepository, MenuItemRepository>();
+		#endregion
 
 		return services;
 	}
