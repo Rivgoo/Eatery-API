@@ -4,7 +4,7 @@ using Domain.Abstractions;
 
 namespace Application.Abstractions.Services;
 
-public abstract class IBaseEntityService<TEntity, TId, TRepository>(TRepository entityRepository, IUnitOfWork unitOfWork)
+public abstract class BaseEntityService<TEntity, TId, TRepository>(TRepository entityRepository, IUnitOfWork unitOfWork)
 	: IEntityService<TEntity, TId>
 	where TEntity : BaseEntity<TId>
 	where TId : IComparable<TId>
@@ -18,13 +18,13 @@ public abstract class IBaseEntityService<TEntity, TId, TRepository>(TRepository 
 	protected IUnitOfWork _unitOfWork = unitOfWork;
 
 	public virtual async Task<bool> ExistsByIdAsync(TId? entityId, CancellationToken cancellationToken = default)
-		=> await _entityRepository.ExistByIdAsync(entityId, cancellationToken);
+		=> await _entityRepository.ExistByIdAsync(entityId!, cancellationToken);
 	public virtual async Task<Result> VerifyExistsByIdAsync(TId? entityId, CancellationToken cancellationToken = default)
 	{
 		if (await ExistsByIdAsync(entityId, cancellationToken) == true)
 			return Result.Ok();
 
-		return Result.Bad(EntityWithIdNotFound(entityId));
+		return Result.Bad(EntityWithIdNotFound(entityId!));
 	}
 
 	public virtual async Task<Result<TEntity>> GetByIdAsync(TId entityId, CancellationToken cancellationToken = default)
@@ -79,7 +79,7 @@ public abstract class IBaseEntityService<TEntity, TId, TRepository>(TRepository 
 
 		if (entityResult.IsFailure) return entityResult;
 
-		return await DeleteEntityAsync(entityResult.Value);
+		return await DeleteEntityAsync(entityResult.Value!);
 	}
 
 	protected abstract Task<Result> ValidateEntityAsync(TEntity entity);

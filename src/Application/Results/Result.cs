@@ -74,7 +74,7 @@ public class Result
 	public static Result Bad(Error error) =>
 		new(error);
 
-	public Result<TValue> ToValue<TValue>() => Result<TValue>.Bad(Error);
+	public Result<TValue> ToValue<TValue>() => Result<TValue>.Bad(Error!);
 }
 
 public sealed class Result<TValue> : Result
